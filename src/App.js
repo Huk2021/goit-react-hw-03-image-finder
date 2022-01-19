@@ -6,6 +6,7 @@ import Button from "./components/Button/Button";
 import Loader from "./components/Loader/Loader";
 import fetchImages from "./services/images-api";
 import Modal from "./components/Modal/Modal";
+import "./App.css";
 
 class App extends Component {
   state = {

@@ -1,10 +1,18 @@
 import PropTypes from "prop-types";
+import {
+  ImageGalleryItemList,
+  ImageGalleryItemImage,
+} from "./ImageGalleryItem.styled";
 
 export default function ImageGalleryItem({ src, largeImageURL, alt, onClick }) {
   return (
-    <li>
-      <img src={src} alt={alt} onClick={() => onClick(largeImageURL)} />
-    </li>
+    <ImageGalleryItemList>
+      <ImageGalleryItemImage
+        src={src}
+        alt={alt}
+        onClick={() => onClick(largeImageURL)}
+      />
+    </ImageGalleryItemList>
   );
 }
 ImageGalleryItem.propTypes = {
