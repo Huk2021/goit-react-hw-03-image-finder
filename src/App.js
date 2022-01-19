@@ -1,25 +1,124 @@
-import logo from "./logo.svg";
-import "./App.css";
+import React, { Component } from "react";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Searchbar from "./components/Searchbar/Searchbar";
+import ImageGallery from "./components/ImageGallery/ImageGallery";
+import Button from "./components/Button/Button";
+import Loader from "./components/Loader/Loader";
+import fetchImages from "./services/images-api";
+import Modal from "./components/Modal/Modal";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    searchQuery: "",
+    images: [],
+    page: 1,
+    showModal: false,
+    loadMore: false,
+    largeImageURL: "",
+    status: "idle",
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    const prevQuery = prevState.searchQuery;
+    const nextQuery = this.state.searchQuery;
+    const { page } = this.state;
+    if (prevQuery !== nextQuery) {
+      this.setState({ images: [], page: 1, status: "pending" });
+
+      this.getImgFromFetch(nextQuery, page);
+    }
+    if (prevState.page !== page && page !== 1) {
+      this.getImgFromFetch(nextQuery, page);
+    }
+  }
+
+  getImgFromFetch = (searchQuery, pageNumber) => {
+    fetchImages(searchQuery, pageNumber)
+      .then((images) => {
+        if (!images.hits.length) {
+          alert("Картинка не найдена");
+          this.setState({
+            error: "Ошибка, попробуйте еще раз",
+            status: "rejected",
+          });
+        } else {
+          const data = images.hits.map(
+            ({ id, tags, webformatURL, largeImageURL }) => {
+              return {
+                id,
+                webformatURL,
+                tags,
+                largeImageURL,
+              };
+            }
+          );
+          this.setState((prevState) => ({
+            images: [...prevState.images, ...data],
+            status: "resolved",
+            loadMore: true,
+          }));
+        }
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
+      })
+      .catch((error) =>
+        this.setState({
+          error,
+          status: "rejected",
+        })
+      );
+  };
+
+  handleFormSubmit = (searchQuery) => {
+    this.setState({ searchQuery, page: 1 });
+  };
+
+  onClickButton = () => {
+    this.setState((prevState) => ({
+      page: prevState.page + 1,
+    }));
+  };
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  render() {
+    const { images, status, showModal, largeImageURL, loadMore } = this.state;
+    return (
+      <div>
+        <Searchbar onSubmit={this.handleFormSubmit} />
+
+        {status === "pending" && (
+          <>
+            {" "}
+            <ImageGallery
+              images={images}
+              // onClick={this.toggleModal}
+            />
+            <Loader />
+          </>
+        )}
+
+        {status === "resolved" && (
+          <>
+            <ImageGallery images={images} onClick={this.toggleModal} />
+            {loadMore && <Button loadMore={this.onClickButton} />}
+          </>
+        )}
+
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <img src={largeImageURL} alt="" />
+          </Modal>
+        )}
+      </div>
+    );
+  }
 }
 
 export default App;
