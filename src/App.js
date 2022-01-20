@@ -96,18 +96,14 @@ class App extends Component {
 
         {status === "pending" && (
           <>
-            {" "}
-            <ImageGallery
-              images={images}
-              // onClick={this.toggleModal}
-            />
+            <ImageGallery images={images} onImageClick={this.toggleModal} />
             <Loader />
           </>
         )}
 
         {status === "resolved" && (
           <>
-            <ImageGallery images={images} onClick={this.toggleModal} />
+            <ImageGallery images={images} onImageClick={this.toggleModal} />
             {loadMore && <Button loadMore={this.onClickButton} />}
           </>
         )}

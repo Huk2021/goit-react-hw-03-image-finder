@@ -4,20 +4,25 @@ import {
   ImageGalleryItemImage,
 } from "./ImageGalleryItem.styled";
 
-export default function ImageGalleryItem({ src, largeImageURL, alt, onClick }) {
+export default function ImageGalleryItem({
+  webformatURL,
+  largeImageURL,
+  alt,
+  onImageClick,
+}) {
   return (
     <ImageGalleryItemList>
       <ImageGalleryItemImage
-        src={src}
+        src={webformatURL}
         alt={alt}
-        onClick={() => onClick(largeImageURL)}
+        onClick={() => onImageClick(largeImageURL)}
       />
     </ImageGalleryItemList>
   );
 }
 ImageGalleryItem.propTypes = {
   alt: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  // id: PropTypes.number.isRequired,
   largeImageURL: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
+  webformatURL: PropTypes.string.isRequired,
 };
