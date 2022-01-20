@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const SearchbarHeader = styled.header`
   top: 0;
   left: 0;
+  margin-bottom: 15px;
   position: sticky;
   z-index: 1100;
   display: flex;

@@ -22,7 +22,6 @@ export default function ImageGalleryItem({
 }
 ImageGalleryItem.propTypes = {
   alt: PropTypes.string.isRequired,
-  // id: PropTypes.number.isRequired,
   largeImageURL: PropTypes.string.isRequired,
   webformatURL: PropTypes.string.isRequired,
 };

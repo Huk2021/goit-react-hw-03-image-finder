@@ -88,6 +88,11 @@ class App extends Component {
     }));
   };
 
+  onImageClick = (largeImageURL) => {
+    this.setState({ largeImageURL });
+    this.toggleModal();
+  };
+
   render() {
     const { images, status, showModal, largeImageURL, loadMore } = this.state;
     return (
@@ -96,14 +101,14 @@ class App extends Component {
 
         {status === "pending" && (
           <>
-            <ImageGallery images={images} onImageClick={this.toggleModal} />
+            <ImageGallery images={images} onImageClick={this.onImageClick} />
             <Loader />
           </>
         )}
 
         {status === "resolved" && (
           <>
-            <ImageGallery images={images} onImageClick={this.toggleModal} />
+            <ImageGallery images={images} onImageClick={this.onImageClick} />
             {loadMore && <Button loadMore={this.onClickButton} />}
           </>
         )}
