@@ -13,6 +13,10 @@ class Searchbar extends Component {
     searchQuery: "",
   };
 
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
+
   handleChange = (e) => {
     this.setState({ searchQuery: e.currentTarget.value.toLowerCase().trim() });
   };
@@ -57,7 +61,3 @@ class Searchbar extends Component {
 }
 
 export default Searchbar;
-
-Searchbar.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};

@@ -6,6 +6,10 @@ import { Overlay, ModalContainer } from "./Modal.styled";
 const modalRoot = document.querySelector("#modal-root");
 
 class Modal extends Component {
+  static propTypes = {
+    onClose: PropTypes.func.isRequired,
+  };
+
   componentDidMount() {
     window.addEventListener("keydown", this.handleKeyDown);
   }
@@ -37,7 +41,3 @@ class Modal extends Component {
 }
 
 export default Modal;
-
-Modal.propTypes = {
-  onClose: PropTypes.func.isRequired,
-};
