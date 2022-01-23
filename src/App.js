@@ -79,6 +79,7 @@ class App extends Component {
   onClickButton = () => {
     this.setState((prevState) => ({
       page: prevState.page + 1,
+      status: "pending",
     }));
   };
 
